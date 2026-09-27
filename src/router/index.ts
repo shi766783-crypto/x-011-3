@@ -16,6 +16,12 @@ const router = createRouter({
           meta: { title: '学习看板' },
         },
         {
+          path: 'reports',
+          name: 'reports',
+          component: () => import('@/views/ReportsView.vue'),
+          meta: { title: '学习报告' },
+        },
+        {
           path: 'plans',
           name: 'plans',
           component: () => import('@/views/PlansView.vue'),

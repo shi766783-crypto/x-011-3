@@ -45,6 +45,48 @@ export function monthOf(key: string): string {
   return key.slice(0, 7)
 }
 
+/** 自然周起始日（周一） */
+export function weekStartOf(key: string): string {
+  const mondayIndex = (parseDateKey(key).getDay() + 6) % 7
+  return addDays(key, -mondayIndex)
+}
+
+/** 自然周结束日（周日） */
+export function weekEndOf(key: string): string {
+  return addDays(weekStartOf(key), 6)
+}
+
+/** 自然月起始日（1 号） */
+export function monthStartOf(key: string): string {
+  return `${monthOf(key)}-01`
+}
+
+/** 自然月结束日（月末） */
+export function monthEndOf(key: string): string {
+  const first = parseDateKey(monthStartOf(key))
+  const nextFirst = new Date(first.getFullYear(), first.getMonth() + 1, 1)
+  return addDays(toDateKey(nextFirst), -1)
+}
+
+/** 日期所在周的周四（ISO 8601 以周四判定周归属） */
+function thursdayOf(key: string): Date {
+  const date = parseDateKey(key)
+  const mondayIndex = (date.getDay() + 6) % 7
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + (3 - mondayIndex))
+}
+
+/** ISO 8601 周数（1-53） */
+export function isoWeekNumber(key: string): number {
+  const thursday = thursdayOf(key)
+  const firstThursday = thursdayOf(toDateKey(new Date(thursday.getFullYear(), 0, 4)))
+  return 1 + Math.round((thursday.getTime() - firstThursday.getTime()) / (7 * DAY_MS))
+}
+
+/** ISO 8601 周所属年份（跨年时可能与日历年份不同） */
+export function isoWeekYear(key: string): number {
+  return thursdayOf(key).getFullYear()
+}
+
 /** 短标签，如 "9/15" */
 export function shortLabel(key: string): string {
   const [, m, d] = key.split('-')
