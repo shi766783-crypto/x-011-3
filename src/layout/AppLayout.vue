@@ -10,6 +10,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { path: '/dashboard', title: '学习看板', icon: '📊' },
+  { path: '/reports', title: '学习报告', icon: '📈' },
   { path: '/plans', title: '学习计划', icon: '🎯' },
   { path: '/logs', title: '学习日志', icon: '📝' },
   { path: '/cards', title: '知识卡片', icon: '📚' },
